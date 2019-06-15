@@ -70,6 +70,7 @@ func handleRequest() {
 	myRouter.HandleFunc("/systemhealth/{id}", systemHealthData)
 	myRouter.HandleFunc("/systemhealth", systemHealthData)
 	myRouter.HandleFunc("/forward/url={targeturl}", handler)
+	myRouter.HandleFunc("/rev", kubedns_handler)
 	// finally, instead of passing in nil, we want
 	// to pass in our newly created router as the second
 	// argument
@@ -87,6 +88,21 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		target = "http://" + key
 	}
 
+	url, _ := url.Parse(target)
+	fmt.Println(url)
+	fmt.Println(url.Scheme)
+	fmt.Println(url.Host)
+	proxy := httputil.NewSingleHostReverseProxy(url)
+
+	r.URL.Host = url.Host
+	r.URL.Scheme = url.Scheme
+	r.Header.Set("X-Forwarded-Host", r.Header.Get("Host"))
+	r.Host = url.Host
+	proxy.ServeHTTP(w, r)
+}
+
+func kubedns_handler(w http.ResponseWriter, r *http.Request) {
+	target := "http://product-list-api-service.istio-example.svc.cluster.local:3001"
 	url, _ := url.Parse(target)
 	fmt.Println(url)
 	fmt.Println(url.Scheme)
