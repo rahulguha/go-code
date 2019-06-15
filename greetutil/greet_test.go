@@ -8,7 +8,7 @@ func TestGreet(t *testing.T) {
 	}{
 		{"male", "Mr"},
 		{"female", "Mrs"},
-		{"", "Mr"},
+		{"", "Mrs"},
 	}
 	for _, c := range cases {
 		got := Greet(c.in)

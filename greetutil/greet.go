@@ -2,8 +2,10 @@ package greetutil
 
 func Greet(s string) string {
 
-	greet := "Mrs"
-	if s != "female" {
+	greet := "Mr"
+	if s != "male" {
+		greet = "Mrs"
+	} else {
 		greet = "Mr"
 	}
 	return greet

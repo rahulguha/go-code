@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	fmt.Println(greetutil.Greet("male"))
+	fmt.Println(greetutil.Greet("female"))
 }
